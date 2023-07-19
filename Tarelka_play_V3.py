@@ -1,4 +1,4 @@
-#ЭТО ВЕРСИЯ ИГРЫ 3.0(ребаг)
+#ЭТО ВЕРСИЯ ИГРЫ 3.1(ребаг)
 import pygame
 import random
 #экран
@@ -17,10 +17,11 @@ B = 1
 st = 1
 #создание звёзд на фоне
 def draw():
-    for i in range(1000):
+    for i in range(100):
         screen.fill(pygame.Color('white'),
                     (random.random() * infoObject.current_w,
                      random.random() * infoObject.current_h, 1, 1))
+
 # Берём из папки фотки
 def load_image(name):
     fullname = "Foto" + "/" + name
@@ -34,12 +35,14 @@ def load_image(name):
 
         raise SystemExit()
     return image
+
 #музыка
 my_sound_1 = pygame.mixer.Sound("Cafeteria.mp3")
 my_sound_1.play(-1)
 #название окна
 pygame.display.set_caption('WING COMMANDER')
 running = True
+
 #выбор сложности и заставка
 while running:
     screen.fill((0, 0, 0))  # для чёткости текста
@@ -64,9 +67,11 @@ while running:
 
     text5 = f1.render("'Нажмите нужную цифру на клавиатуре'", True, (50, 205, 50))
     screen.blit(text5, (520, infoObject.current_h - 350))
+
     pygame.display.flip()
     clock.tick(fps)
-    #нажатие на цифры
+
+    #сложность(параметры)
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
             V = 3
@@ -104,8 +109,6 @@ if x == 2:
 if x == 3:
     Level = "Невозможно"
 
-#создание звёзд на фоне
-
 #движене тарелки
 def update(image, speed):
     #по Х
@@ -121,8 +124,10 @@ all_sprites = pygame.sprite.Group()
 car = pygame.sprite.Sprite()
 car.image = image
 car.rect = car.image.get_rect()
+
 if st != 1:
     all_sprites.add(car)
+
 #для красного
 image_5 = load_image('Kosmolet_2.gif')
 car_red = pygame.sprite.Sprite()
@@ -137,6 +142,7 @@ if st != 1:
     all_sprites.add(tal)
 random.seed()
 tal.rect.x, tal.rect.y = random.randint(200, infoObject.current_w - 200), random.randint(100, 300)
+
 #красная тарелка
 image_6 = load_image('Tarelka_2.gif')
 tal_red = pygame.sprite.Sprite()
@@ -149,22 +155,26 @@ def tall():
 #кординаты
 car.rect.x = 500
 car.rect.y = 500
+
 #луч космолёта
 image_3 = load_image('Piy.gif')
 piy = pygame.sprite.Sprite()
 piy.image = image_3
 piy.rect = piy.image.get_rect()
+
 #луч  тарелки
 image_4 = load_image('Piy_2.gif')
 piy_2 = pygame.sprite.Sprite()
 piy_2.image = image_4
 piy_2.rect = piy_2.image.get_rect()
+
 #скорость тарелки и лучей и ещё некоторые переменные
 v = V
 r = 0
 l = L
 b = B
 step = st
+
 #музыка в игре
 my_sound_1.set_volume(0)
 my_sound_2 = pygame.mixer.Sound("musik.mp3")
@@ -172,6 +182,7 @@ my_sound_2.play(-1)
 my_sound_2.set_volume(0.5)
 running = True
 #цикл
+
 while running:
     #для выхода из выбора сложности
     if st == 1:
@@ -316,10 +327,12 @@ while running:
     draw()
     background = load_image("pipboy2.gif")
     screen.blit(background, (200, infoObject.current_h - 670))
+
+    #проигрыш
     if l <= 0:
         #вывод текста
         f1 = pygame.font.Font(None, 36)
-        #текст
+
         text1 = f1.render('Вас сбили!', True, (50, 205, 50))
         screen.blit(text1, (520, infoObject.current_h - 550))
 
@@ -328,6 +341,11 @@ while running:
 
         text2 = f1.render('На сложности: ' + str(Level), True, (50, 205, 50))
         screen.blit(text2, (520, infoObject.current_h - 450))
+
+        text2 = f1.render('Для выхода нажмите esc ', True, (50, 205, 50))
+        screen.blit(text2, (520, infoObject.current_h - 400))
+
+    #победа
     if b <= 0:
         # вывод текста
         f1 = pygame.font.Font(None, 36)
@@ -337,6 +355,10 @@ while running:
 
         text2 = f1.render('На сложности: ' + str(Level), True, (50, 205, 50))
         screen.blit(text2, (520, infoObject.current_h - 500))
+
+        text2 = f1.render('Для выхода нажмите esc ', True, (50, 205, 50))
+        screen.blit(text2, (520, infoObject.current_h - 450))
+
     #для нормального выхода из выбора сложности
     if l > 0 and b > 0:
         f1 = pygame.font.Font(None, 36)
@@ -344,6 +366,7 @@ while running:
         screen.blit(text2, (520, infoObject.current_h - 500))
     pygame.display.flip()
     clock.tick(fps)
+
     #нажатие на цифры
     for event in pygame.event.get():
         # выход
@@ -351,4 +374,5 @@ while running:
                 if event.key == pygame.K_ESCAPE:
                     running = False
                     print("Вы вышли из игры")
+
 pygame.quit()
